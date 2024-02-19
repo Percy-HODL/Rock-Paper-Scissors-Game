@@ -3,35 +3,11 @@
 #include <ctime>
 using namespace std;
 
-int rule(char p, char c){
-    if (p == c){
-        return 0;
-    }
-
-    if (p == 'r' && c == 'p'){
-        return -1;
-    }
-    else if (p == 's' && c == 'p'){
-        return 1;
-    }
-    else if (p == 'p' && c == 'r'){
-        return 1;
-    }
-    else if (p == 's' && c == 'r'){
-        return -1;
-    }
-    else if (p == 'r' && c == 's'){
-        return 1;
-    }
-    else if (p == 'p' && c == 's'){
-        return -1;
-    }
-}
-
 int main(){
-
     char computer;
     char player;
+    u_int32_t computer_score = 0; // To track computer's score
+    u_int32_t player_score = 0; // To track player's score
     char playmore;
     cout << "\t\t\t\t";
     for(int i = 0; i < 50; i++){
@@ -48,7 +24,7 @@ int main(){
     cout << "\t\t\t\t";
     cout << "\t Note: " << endl;
     cout << "\t\t\t\t";
-    cout << "\t\t r : Rock" << endl << "\t\t\t\t" << "\t\t p - Paper" << endl << "\t\t\t\t" << "\t\t scissor" << endl << "\t\t\t\t"<< endl << endl;
+    cout << "\t\t r : Rock" << endl << "\t\t\t\t" << "\t\t p - Paper" << endl << "\t\t\t\t" << "\t\t s - scissor" << endl << "\t\t\t\t"<< endl << endl;
     cout << "\t\t\t\t";
     for(int i = 0; i < 50; i++){
         cout << "-";
@@ -57,15 +33,15 @@ int main(){
     do{
         int number = 0;
         srand(time(0));        // initialized time to 0
-        number = rand() % 100; // will choose a number in range 0 - 99
+        number = rand() % 3 + 1; // will choose a number in range 1 - 3 
         // r - for rock
         // p - for paper
         // s - for scissors
-        if (number < 33)
+        if (number == 1)
         {
             computer = 'r';
         }
-        else if (number > 66)
+        else if (number == 2)
         {
             computer = 's';
         }
@@ -77,18 +53,60 @@ int main(){
         cout << "\t\t\t\t";
         cout << "Enter your choice: ";
         cin >> player;
-        int result = rule(player, computer);
-        if(result == 1){
-            cout << "\t\t\t\t";
-            cout << "You won! Hurray" << endl;
-        }
-        else if(result == -1){
-            cout << "\t\t\t\t";
-            cout << "You lose! Bad Luck" << endl;
-        }
-        else{
-            cout << "\t\t\t\t";
-            cout << "Woah! That's Tie!" << endl;
+        switch(player){
+            case 'r':
+                if(computer == 'r'){
+                    cout << "\t\t\t\t";
+                    cout << "Woah, that's a tie!\n";
+                }
+                if (computer =='p'){
+                    cout << "\t\t\t\t";
+                    cout << "You lose!\n";
+                    computer_score+=1;
+                }
+                if (computer == 's'){
+                    cout << "\t\t\t\t";
+                    cout << "You win\n";
+                    player_score+=1;
+                }
+                break;
+            case 'p':
+                if(computer == 'r'){
+                    cout << "\t\t\t\t";
+                    cout << "You win!\n";
+                    player_score +=1;
+                }
+                if (computer =='p'){
+                    cout << "\t\t\t\t";
+                    cout << "Woah, thats a tie !\n";
+                    
+                }
+                if (computer == 's'){
+                    cout << "\t\t\t\t";
+                    cout << "You lose \n";
+                    computer_score+=1;
+                }
+                break;
+            case 's':
+                if(computer == 'r'){
+                    cout << "\t\t\t\t";
+                    cout << "You lose!\n";
+                    computer_score+=1;
+
+                }
+                if (computer =='p'){
+                    cout << "\t\t\t\t";
+                    cout << "You win!\n";
+                    player_score+=1;
+                }
+                if (computer == 's'){
+                    cout << "\t\t\t\t";
+                    cout << "Woah, thats a tie\n";
+                    player_score+=1;
+                }
+                break;
+
+
         }
         cout << "\t\t\t\t";
         cout << "Do you want to Play Again?" << endl;
@@ -101,6 +119,18 @@ int main(){
         }
         cout << endl;
     }while(playmore != 'n');
-
+    if(player_score > computer_score){
+        cout << "You win with a score of " << player_score << " whilst the computer only got " << computer_score << endl;
+    }
+    if(player_score < computer_score){
+        cout << "You lose with a score of " << player_score << " whilst the computer got " << computer_score << endl;
+    }
+    if(player_score == computer_score){
+        cout << "Woah, thats a tie, both sides scored " << player_score << endl;
+    }
     return 0;
+
+
+
 }
+
